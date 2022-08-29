@@ -1,0 +1,51 @@
+{
+    "name": "@sap/ux-ui5-fe-mockserver-middleware",
+    "version": "1.6.5",
+    "description": "SAP Fiori tools - UI5 middleware for the Fiori elements mock server",
+    "publisher": "SAPSE",
+    "license": "SEE LICENSE IN LICENSE",
+    "private": false,
+    "main": "dist/index.js",
+    "module": "src/index.ts",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist",
+        "ui5-dist",
+        "README.md",
+        "package.json",
+        "ui5.yaml",
+        "ui5-serve.yaml"
+    ],
+    "bin": {
+        "mockserver": "./dist/cli.js"
+    },
+    "scripts": {
+        "pre-commit": "lint-staged --quiet",
+        "clean": "rimraf ./build ./dist ./ui5-dist",
+        "clean-dev": "rimraf ./build ./dist",
+        "build": "npm-run-all clean build:compile build:compile-cli",
+        "build:compile": "tsc --project ./tsconfig.build.json",
+        "build:compile-cli": "tsc --project ./tsconfig-cli.build.json",
+        "dev": "yarn clean-dev && tsc -project ./tsconfig.dev.json --watch",
+        "lint": "eslint src --ext .ts --quiet",
+        "lint:fix": "eslint src --ext .ts --fix --quiet",
+        "format": "prettier src --write --ignore-path ../../.prettierignore",
+        "test": "jest --maxWorkers=1 --ci --forceExit --detectOpenHandles --silent",
+        "test:update": "jest --silent -u"
+    },
+    "dependencies": {
+        "@sap-ux/ui5-middleware-fe-mockserver": "^2.1.26"
+    },
+    "devDependencies": {
+        "@types/jest": "^26.0.24",
+        "jest": "^27.0.6",
+        "jest-environment-node": "^27.0.6",
+        "jest-sonar-reporter": "^2.0.0",
+        "ts-jest": "27.0.3",
+        "typescript": "4.3.5"
+    },
+    "jestSonar": {
+        "reportPath": "reports/test/unit",
+        "reportFile": "test-report.xml"
+    }
+}
