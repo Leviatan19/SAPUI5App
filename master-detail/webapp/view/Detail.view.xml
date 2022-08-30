@@ -49,6 +49,12 @@
                         hAlign="End">
                         <Text text="{i18n>detailLineItemTableUnitNumberColumn}"/>
                     </Column>
+                    <Column>
+                        <Text text="Description"/>
+                    </Column>
+                    <Column>
+                        <Text text="Rating"/>
+                    </Column>
                 </columns>
                 <items>
                     <ColumnListItem>
@@ -61,6 +67,8 @@
                                     path: 'Price',
                                     formatter: '.formatter.currencyValue'
                                 }" />
+                                <Text text="{Description}"></Text>
+                            <Text text="{Rating}"></Text>
                         </cells>
                     </ColumnListItem>
                 </items>
