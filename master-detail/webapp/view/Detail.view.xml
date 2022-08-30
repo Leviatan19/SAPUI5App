@@ -49,6 +49,9 @@
                         hAlign="End">
                         <Text text="{i18n>detailLineItemTableUnitNumberColumn}"/>
                     </Column>
+                    <Column>
+                    <Text text ="Change"/>
+                    </Column>
                 </columns>
                 <items>
                     <ColumnListItem>
@@ -61,8 +64,8 @@
                                     path: 'Price',
                                     formatter: '.formatter.currencyValue'
                                 }" />
+                                <ObjectAttribute active="true" id="deleteId" text="Delete" press=".onDeleteClick"  />
                         </cells>
-                        <ObjectAttribute active="true" id="deleteId" text="Delete" press=".onDeleteClick"/>
                     </ColumnListItem>
                 </items>
             </Table>

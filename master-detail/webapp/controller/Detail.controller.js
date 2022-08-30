@@ -1,20 +1,23 @@
 sap.ui.define([
     "./BaseController",
     "sap/ui/model/json/JSONModel",
-    "../model/formatter",
-    "sap/m/library",
+    "sap/ui/model/Filter",
+    "sap/ui/model/Sorter",
+    "sap/ui/model/FilterOperator",
+    "sap/m/GroupHeaderListItem",
+    "sap/ui/Device",
+    "sap/ui/core/Fragment",
     "../model/formatter",
     "sap/m/Dialog",
-    "sap/m/DialogType", 
+    "sap/m/DialogType",
     "sap/m/Button", 
     "sap/m/ButtonType", 
     "sap/m/Text", 
     "sap/m/MessageToast", 
     "sap/m/MessageBox", 
-    "sap/m/Input"
-
-], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, 
-    formatter, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input, formatter, mobileLibrary) {
+    "sap/m/Input",
+    "sap/m/library"
+], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, formatter, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input, mobileLibrary) {
     "use strict";
 
     // shortcut for sap.m.URLHelper
