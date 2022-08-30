@@ -95,7 +95,7 @@ sap.ui.define([
                                     this._updateConfirmDialog(prevName, newName, clickedItemPath);
                                 } else {
                                     console.log("is not free")
-                                    MessageBox.error("Category with that name already exists!", {
+                                    MessageBox.error("Product with that name already exists!", {
                                         title: "Error"
                                     })
                                 }
@@ -121,7 +121,7 @@ sap.ui.define([
                 type: DialogType.Message,
                 title: "Confirmation",
                 content: new Text({
-                    text: `Are you sure you want to rename category from ${prevName} to ${newName}?`
+                    text: `Are you sure you want to rename product from ${prevName} to ${newName}?`
                 }),
                 beginButton: new Button({
                     type: ButtonType.Accept,
