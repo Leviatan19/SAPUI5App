@@ -171,7 +171,7 @@ sap.ui.define([
                 })
             });
             this.oConfirmDialog.open();
-        }
+        },
         /**
          * Event handler for the list search field. Applies current
          * filter value and triggers a new search. If the search field's
