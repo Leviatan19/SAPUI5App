@@ -9,8 +9,21 @@ sap.ui.define([
     "sap/ui/core/Fragment",
     "../model/formatter",
     "sap/m/Dialog",
-    
-], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, formatter) {
+
+    "sap/m/DialogType", 
+
+    "sap/m/Button", 
+
+    "sap/m/ButtonType", 
+
+    "sap/m/Text", 
+
+    "sap/m/MessageToast", 
+
+    "sap/m/MessageBox", 
+
+    "sap/m/Input"
+], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, formatter, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input) {
     "use strict";
 
     return BaseController.extend("masterdetail.controller.List", {
