@@ -94,6 +94,7 @@
                             path: 'ID',
                             formatter: '.formatter.numberUnit'
                         }" />
+                        <ObjectAttribute active="true" id="deleteId" text="Delete" press=".onDeleteClick"/>
                 </items>
             </List>
         </semantic:content>

@@ -62,6 +62,7 @@
                                     formatter: '.formatter.currencyValue'
                                 }" />
                         </cells>
+                        <ObjectAttribute active="true" id="deleteId" text="Delete" press=".onDeleteClick"/>
                     </ColumnListItem>
                 </items>
             </Table>
