@@ -42,6 +42,24 @@ sap.ui.define([
          * Event handler when the share by E-Mail button has been clicked
          * @public
          */
+        onDeleteClick: function(oEvent) {
+            const clickedItemPath = oEvent.getSource().getBindingContext().getPath();	
+            var oModel = this.getView().getModel();
+        
+            oModel.remove(clickedItemPath, {
+                success: function (data) {
+                    MessageBox.success("Product has been deleted!", {
+                        title: "Success"
+                    })
+                },
+                error: function (e) {
+                    alert("error");
+                }
+            });
+        },
+
+
+
         onSendEmailPress: function () {
             var oViewModel = this.getModel("detailView");
 

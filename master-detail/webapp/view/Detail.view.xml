@@ -20,6 +20,7 @@
                     path: 'ID',
                     formatter: '.formatter.numberUnit'
                 }" />
+            <ObjectAttribute text="Make Change"/>
         </semantic:headerContent>
         <semantic:content>
 
@@ -61,6 +62,8 @@
                                     path: 'Price',
                                     formatter: '.formatter.currencyValue'
                                 }" />
+                            <ObjectAttribute active="true" id="deteteProduct" 
+                                text="Delete product" press=".onDeleteClick" />
                         </cells>
                     </ColumnListItem>
                 </items>
