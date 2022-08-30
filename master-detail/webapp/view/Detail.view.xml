@@ -20,6 +20,7 @@
                     path: 'ID',
                     formatter: '.formatter.numberUnit'
                 }" />
+                
         </semantic:headerContent>
         <semantic:content>
 
@@ -49,6 +50,9 @@
                         hAlign="End">
                         <Text text="{i18n>detailLineItemTableUnitNumberColumn}"/>
                     </Column>
+                    <Column>
+                    <Text text="Actions"/> <!--Hard-coded for now-->
+                    </Column>
                 </columns>
                 <items>
                     <ColumnListItem>
@@ -56,11 +60,14 @@
                             <ObjectIdentifier
                                 title="{Name}"
                                 text="{ID}"/>
+                                
                             <ObjectNumber
                                 number="{
                                     path: 'Price',
                                     formatter: '.formatter.currencyValue'
                                 }" />
+                                <ObjectAttribute active="true" id="updateId" text="Edit Product" press=".onUpdateClick"  />
+                                
                         </cells>
                     </ColumnListItem>
                 </items>

@@ -1,9 +1,23 @@
 sap.ui.define([
     "./BaseController",
     "sap/ui/model/json/JSONModel",
+    "sap/ui/model/Filter",
+    "sap/ui/model/Sorter",
+    "sap/ui/model/FilterOperator",
+    "sap/m/GroupHeaderListItem",
+    "sap/ui/Device",
+    "sap/ui/core/Fragment",
     "../model/formatter",
+    "sap/m/Dialog",
+    "sap/m/DialogType",
+    "sap/m/Button", 
+    "sap/m/ButtonType", 
+    "sap/m/Text", 
+    "sap/m/MessageToast", 
+    "sap/m/MessageBox", 
+    "sap/m/Input",
     "sap/m/library"
-], function (BaseController, JSONModel, formatter, mobileLibrary) {
+], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, formatter, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input, mobileLibrary) {
     "use strict";
 
     // shortcut for sap.m.URLHelper
@@ -50,6 +64,87 @@ sap.ui.define([
                 oViewModel.getProperty("/shareSendEmailSubject"),
                 oViewModel.getProperty("/shareSendEmailMessage")
             );
+        },
+
+        onUpdateClick: function(oEvent){
+            var oModel = this.getView().getModel();
+
+            const clickedItemContext = oEvent.getSource().getBindingContext()
+            const clickedItemPath = clickedItemContext.getPath();
+            const clickedItemObject = clickedItemContext.getObject();
+            const prevName = clickedItemObject.Name;
+
+            this.oApproveDialog = new Dialog({
+                type: DialogType.Message,
+                title: "Update",
+                content: new Input({
+                    id: "nameInput",
+                    value: prevName
+                }),
+                beginButton: new Button({
+                    type: ButtonType.Emphasized,
+                    text: "Submit",
+                    press: function () {
+                        const newName = this.oApproveDialog.getContent()[0].getValue()
+                        oModel.read("/Products", {
+                            success: function (data) {
+                                console.log(data.results)
+                                const isNameFree = !data.results?.find(cat => cat.Name === newName);
+
+                                if (isNameFree) {
+                                    this._updateConfirmDialog(prevName, newName, clickedItemPath);
+                                } else {
+                                    console.log("is not free")
+                                    MessageBox.error("Category with that name already exists!", {
+                                        title: "Error"
+                                    })
+                                }
+                                this.oApproveDialog.destroy();
+
+                            }.bind(this)
+                        });
+                    }.bind(this)
+                }),
+                endButton: new Button({
+                    text: "Cancel",
+                    press: function() {
+                        this.oApproveDialog.destroy();
+                    }.bind(this)
+                })
+            });
+            this.oApproveDialog.open();
+        },
+        _updateConfirmDialog: function(prevName, newName, clickedItemPath){
+            var oModel = this.getView().getModel();
+
+            this.oConfirmDialog = new Dialog({
+                type: DialogType.Message,
+                title: "Confirmation",
+                content: new Text({
+                    text: `Are you sure you want to rename category from ${prevName} to ${newName}?`
+                }),
+                beginButton: new Button({
+                    type: ButtonType.Accept,
+                    text: "Yes",
+                    press: function () {
+                        var oCat = {"Name": newName}
+                        oModel.update(clickedItemPath, oCat, {
+                            merge: true, /* if set to true: PATCH/MERGE/ */
+                            success: function () {MessageToast.show("Success!");},
+                            error: function (oError) {MessageToast.show("Something went wrong!");}
+                        });
+                        this.oConfirmDialog.destroy();
+                    }.bind(this)
+                }),
+                endButton: new Button({
+                    text: "No",
+                    type: ButtonType.Reject,
+                    press: function () {
+                        this.oConfirmDialog.destroy();
+                    }.bind(this)
+                })
+            });
+            this.oConfirmDialog.open();
         },
 
         
