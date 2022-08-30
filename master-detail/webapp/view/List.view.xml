@@ -94,6 +94,7 @@
                             path: 'ID',
                             formatter: '.formatter.numberUnit'
                         }" />
+                        <ObjectAttribute active="true" id="updateId" text="Change name" press=".onUpdateClick" />
                 </items>
             </List>
         </semantic:content>
