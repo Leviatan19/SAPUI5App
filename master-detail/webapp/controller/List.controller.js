@@ -7,8 +7,16 @@ sap.ui.define([
     "sap/m/GroupHeaderListItem",
     "sap/ui/Device",
     "sap/ui/core/Fragment",
-    "../model/formatter"
-], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, formatter) {
+    "../model/formatter",
+    "sap/m/Dialog",
+    "sap/m/DialogType", 
+    "sap/m/Button", 
+    "sap/m/ButtonType", 
+    "sap/m/Text", 
+    "sap/m/MessageToast", 
+    "sap/m/MessageBox", 
+    "sap/m/Input"
+], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, formatter, Dialog, DialogType) {
     "use strict";
 
     return BaseController.extend("masterdetail.controller.List", {
@@ -279,6 +287,39 @@ sap.ui.define([
         /* begin: internal methods                                     */
         /* =========================================================== */
 
+        onAddCategoryClick: function() { 
+            this.oApproveDialog = new Dialog({
+             type: DialogType.Message, 
+            title: "Create category", 
+            content: new Input({
+             id: "nameInput" 
+            }),
+            beginButton: new Button({
+             type: ButtonType.Emphasized, 
+            text: "Submit", 
+            press: function () {
+              var oCat = {
+            "ID": Math.floor(Math. random() * 101) + 5,
+            "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+            } 
+            var oModel = this.getView().getModel();
+            oModel.create("/Categories", oCat, {
+             success: function () { MessageToast.show("Success!"); }, 
+            error: function (oError) { MessageToast.show("Something went wrong!"); }
+            });
+             this .oApproveDialog.destroy();
+            }.bind(this)
+             }), 
+            endButton: new Button ({
+             text: "Cancel", 
+            press: function () {
+             this .oApproveDialog.destroy();
+            }.bind(this)
+            })
+            });
+            this .oApproveDialog.open();
+            },
+        
 
         _createViewModel: function() {
             return new JSONModel({
