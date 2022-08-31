@@ -72,9 +72,7 @@
             "": {
                 "dataSource": "mainService",
                 "preload": true,
-                "settings": {
-                    "useBatch": false
-                }
+                "settings": {}
             }
         },
         "resources": {
