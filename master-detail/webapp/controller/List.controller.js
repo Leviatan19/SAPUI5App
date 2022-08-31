@@ -35,19 +35,26 @@ sap.ui.define([
          */
 
         onDeleteClick: function(oEvent) {
-            const clickedItemPath = oEvent.getSource().getBindingContext().getPath();	
-            var oModel = this.getView().getModel();
-        
-            oModel.remove(clickedItemPath, {
-                success: function (data) {
-                    MessageBox.success("Category has been deleted!", {
-                        title: "Success"
-                    })
-                },
-                error: function (e) {
-                    alert("error");
-                }
-            });
+            //Tu się wysypuje - po kliknięciu ok nie prxechodzi dalej
+            if (MessageBox.confirm("Do you want to delete category?") == true) {
+            //Zawsze jest false
+                const clickedItemPath = oEvent.getSource().getBindingContext().getPath();	
+                var oModel = this.getView().getModel();
+                oModel.remove(clickedItemPath, {
+                    success: function (data) {
+                        MessageBox.success("Category has been deleted!", {
+                            title: "Success"
+                        });
+                    },
+                    error: function (e) {
+                        alert("error");
+                    }
+                });
+            }
+            //Cały czas jest false
+            else {
+                MessageBox.success("Unlucky");
+            }
         },
 
         onInit : function () {
