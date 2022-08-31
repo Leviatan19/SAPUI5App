@@ -53,7 +53,7 @@ sap.ui.define([
             }
             //Cały czas jest false
             else {
-                MessageBox.success("Unlucky");
+               // MessageBox.success("Unlucky");
             }
         },
 
