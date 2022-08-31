@@ -51,7 +51,7 @@
                         <Text text="{i18n>detailLineItemTableUnitNumberColumn}"/>
                     </Column>
                     <Column>
-                    <Text text="Actions"/> <!--Hard-coded for now-->
+                        <Text text="Actions"/> <!--Hard-coded for now-->
                     </Column>
                 </columns>
                 <items>
