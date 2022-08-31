@@ -287,39 +287,108 @@ sap.ui.define([
         /* begin: internal methods                                     */
         /* =========================================================== */
 
-        onAddCategoryClick: function() { 
-            this.oApproveDialog = new Dialog({
-             type: DialogType.Message, 
-            title: "Create category", 
-            content: new Input({
-             id: "nameInput" 
-            }),
-            beginButton: new Button({
-             type: ButtonType.Emphasized, 
-            text: "Submit", 
-            press: function () {
-              var oCat = {
-            "ID": Math.floor(Math. random() * 101) + 5,
-            "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
-            } 
-            var oModel = this.getView().getModel();
-            oModel.create("/Categories", oCat, {
-             success: function () { MessageToast.show("Success!"); }, 
-            error: function (oError) { MessageToast.show("Something went wrong!"); }
-            });
-             this .oApproveDialog.destroy();
-            }.bind(this)
-             }), 
-            endButton: new Button ({
-             text: "Cancel", 
-            press: function () {
-             this .oApproveDialog.destroy();
-            }.bind(this)
-            })
-            });
-            this .oApproveDialog.open();
-            },
+        // onAddCategoryClick: function() { 
+        //     this.oApproveDialog = new Dialog({
+        //      type: DialogType.Message, 
+        //     title: "Create category", 
+        //     content: new Input({
+        //      id: "nameInput" 
+        //     }),
+        //     beginButton: new Button({
+        //      type: ButtonType.Emphasized, 
+        //     text: "Submit", 
+        //     press: function () {
+        //       var oCat = {
+        //     "ID": Math.floor(Math. random() * 101) + 5,
+        //     "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+        //     } 
+        //     var oModel = this.getView().getModel();
+        //     oModel.create("/Categories", oCat, {
+        //      success: function () { MessageToast.show("Success!"); }, 
+        //     error: function (oError) { MessageToast.show("Something went wrong!"); }
+        //     });
+        //      this .oApproveDialog.destroy();
+        //     }.bind(this)
+        //      }), 
+        //     endButton: new Button ({
+        //      text: "Cancel", 
+        //     press: function () {
+        //      this .oApproveDialog.destroy();
+        //     }.bind(this)
+        //     })
+        //     });
+        //     this .oApproveDialog.open();
+        //     },
         
+        
+        onAddCategoryClick: function() { 
+                this.oApproveDialog = new Dialog({
+                 type: DialogType.Message, 
+                title: "Create category", 
+                content: new Input({
+                 id: "nameInput" 
+                }),
+                beginButton: new Button({
+                 type: ButtonType.Emphasized, 
+                text: "Submit", 
+                press: function () {
+                //   var oCat = {
+                // "ID": Math.floor(Math. random() * 101) + 5,
+                // "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+                // } 
+                var oModel = this.getView().getModel();
+
+            var oEntry = {};
+
+                    var that = this;
+
+            oModel.read("/Categories",{
+                sorters:  [new sap.ui.model.Sorter("ID",true)],
+                success: function(odata){
+                    console.log(odata.results);
+                    console.log(odata.results[0].ID);
+                    oEntry.ID = odata.results[0].ID + 1;
+                    console.log(oEntry.ID);
+                    var oCat = {
+                        "ID": oEntry.ID,
+                        "Name": that.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[0].getValue() 
+                        } ;
+                    oModel.create("/Categories", oCat, {
+                        success: function () { MessageToast.show("Success!");  
+                        that.oApproveDialog.destroy()},
+                       error: function (oError) { MessageToast.show("Something went wrong!"); }
+                       });
+                }
+            });
+
+            // var oCat = {
+            //     // "ID": oEntry.ID,
+            //     "ID": Math.floor(Math. random() * 101) + 5,
+            //     "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+            //     } 
+
+
+
+                // oModel.create("/Categories", oCat, {
+                //  success: function () { MessageToast.show("Success!"); }, 
+                // error: function (oError) { MessageToast.show("Something went wrong!"); }
+                // });
+                //  this .oApproveDialog.destroy();
+                }.bind(this)
+                 }), 
+                endButton: new Button ({
+                 text: "Cancel", 
+                press: function () {
+                 this .oApproveDialog.destroy();
+                }.bind(this)
+                })
+                });
+                this .oApproveDialog.open();
+                },
+
+
+
+
 
         _createViewModel: function() {
             return new JSONModel({

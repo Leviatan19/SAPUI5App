@@ -17,6 +17,7 @@ sap.ui.define([
     "sap/m/MessageToast", 
     "sap/m/MessageBox", 
     "sap/m/Input",
+    "sap/m/FlexBox",
     "sap/m/library"
 ], function (BaseController, JSONModel, formatter, mobileLibrary, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input) {
     "use strict";
@@ -248,51 +249,202 @@ sap.ui.define([
         //     this .oApproveDialog.open();
         //     },
 
-          onAddProductClick: function() { 
-            this.oApproveDialog = new Dialog({
-             type: DialogType.Message, 
-            title: "Add product", 
-            content: new Input({
-             id: "nameInput" 
-            }),
 
-         
+// onAddProductClick: function() { 
+//             this.oApproveDialog = new Dialog({
+//              type: DialogType.Message, 
+//             title: "Add product", 
+//             content: new Input({
+//              id: "nameInput" 
+//             }),
+//             beginButton: new Button({
+//              type: ButtonType.Emphasized, 
+//             text: "Submit", 
+//             press: function () {
+//               var oCat = {
+//             "ID": Math.floor(Math. random() * 101) + 5,
+//             "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+//             } 
+//             var oModel = this.getView().getModel();
+//             oModel.create("/Products", oCat, {
+//              success: function () { MessageToast.show("Success!"); }, 
+//             error: function (oError) { MessageToast.show("Something went wrong!"); }
+//             });
+//              this .oApproveDialog.destroy();
+//             }.bind(this)
+//              }), 
+//             endButton: new Button ({
+//              text: "Cancel", 
+//             press: function () {
+//              this .oApproveDialog.destroy();
+//             }.bind(this)
+//             })
+//             });
+//             this .oApproveDialog.open();
+//             },
 
-            // content: new Input({
-            //     id: "descriptionInput" 
-            //    }),
-            beginButton: new Button({
-             type: ButtonType.Emphasized, 
-            text: "Submit", 
-            press: function () {
-              var oCat = {
-            "ID": Math.floor(Math. random() * 101) + 5,
-            "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue(), 
-            // // "Description": this.oApproveDialog.getContent()[1].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[1].getValue()
-            // "Description": this.getView().byId("decsriptioninput").getValue()
-            } 
 
+            onAddProductClick: function() { 
+                this.oApproveDialog = new Dialog({
+                 type: DialogType.Message, 
+                title: "Add product", 
+                content: new Input({
+                 id: "nameInput" 
+                }),
+                beginButton: new Button({
+                 type: ButtonType.Emphasized, 
+                text: "Submit", 
+                press: function () {
+                //   var oCat = {
+                // "ID": Math.floor(Math. random() * 101) + 5,
+                // "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+                // } 
+                var oModel = this.getView().getModel();
+
+            var oEntry = {};
+
+                    var that = this;
+
+            oModel.read("/Products",{
+                sorters:  [new sap.ui.model.Sorter("ID",true)],
+                success: function(odata){
+                    console.log(odata.results);
+                    console.log(odata.results[0].ID);
+                    oEntry.ID = odata.results[0].ID + 1;
+                    console.log(oEntry.ID);
+                    var oCat = {
+                        "ID": oEntry.ID,
+                        "Name": that.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[0].getValue() 
+                        } ;
+                    oModel.create("/Products", oCat, {
+                        success: function () { MessageToast.show("Success!");  
+                        that.oApproveDialog.destroy()},
+                       error: function (oError) { MessageToast.show("Something went wrong!"); }
+                       });
+                }
+            });
+
+            // var oCat = {
+            //     // "ID": oEntry.ID,
+            //     "ID": Math.floor(Math. random() * 101) + 5,
+            //     "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+            //     } 
+
+
+
+                // oModel.create("/Categories", oCat, {
+                //  success: function () { MessageToast.show("Success!"); }, 
+                // error: function (oError) { MessageToast.show("Something went wrong!"); }
+                // });
+                //  this .oApproveDialog.destroy();
+                }.bind(this)
+                 }), 
+                endButton: new Button ({
+                 text: "Cancel", 
+                press: function () {
+                 this .oApproveDialog.destroy();
+                }.bind(this)
+                })
+                });
+                this .oApproveDialog.open();
+                },
+
+
+
+
+//           onAddProductClick: function() { 
+//             this.oApproveDialog = new Dialog({
+//              type: DialogType.Message, 
+//             title: "Add product", 
+//             content: new Input({
+//              id: "nameInput" 
+//             }),
+
+            
+
+//             // content: new Input({
+//             //     id: "descriptionInput" 
+//             //    }),
+//             beginButton: new Button({
+//              type: ButtonType.Emphasized, 
+//             text: "Submit", 
+//             press: function () {
+//             //   var oCat = {
+//             // "ID": Math.floor(Math. random() * 101) + 5,
+//             // "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue(), 
+//             // // "Description": this.oApproveDialog.getContent()[1].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[1].getValue()
+//             // "Description": this.getView().byId("decsriptioninput").getValue()
+//             //} 
+//             var oCat = {
+//                 "ID": Math.floor(Math. random() * 101) + 5,
+//                 //"ID": oEntry.ID,oEntry["ID"]
+//                 "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue(), }
            
+//             // oModel.read("/Products(0)", {
+//             //     success: function () { MessageToast.show("Success!"); }, 
+//             //    error: function (oError) { MessageToast.show("Something went wrong!"); } });//{success: mySuccessHandler, error: myErrorHandler});
 
 
+//              //  oModel.read("/Products(1)", {success: mySuccessHandler, error: myErrorHandler});
 
-            var oModel = this.getView().getModel();
-            oModel.create("/Products", oCat, {
-             success: function () { MessageToast.show("Success!"); }, 
-            error: function (oError) { MessageToast.show("Something went wrong!"); }
-            });
-             this .oApproveDialog.destroy();
-            }.bind(this)
-             }), 
-            endButton: new Button ({
-             text: "Cancel", 
-            press: function () {
-             this .oApproveDialog.destroy();
-            }.bind(this)
-            })
-            });
-            this .oApproveDialog.open();
-            },
+            
+            
+            
+            
+            
+//              var oModel = this.getView().getModel();
+
+//             //oModel.read("/Products(1)", {success: mySuccessHandler, error: myErrorHandler});
+
+//             // oModel.read("/Products",{
+// 			// 	//sorters:  [new sap.ui.model.Sorter("ID",true)],
+// 			//  	success: function(odata){
+// 			//  		console.log("MAX ID===",odata.results[0].ID);
+// 			//  		//oEntry.ID = odata.results[1].ID + 1;
+					
+// 			// 		},	
+			 	
+// 			// });
+
+// var oEntry = {};
+
+//             oModel.read("/Products",{
+//                 sorters:  [new sap.ui.model.Sorter("ID",true)],
+//                 success: function(odata){
+//                     console.log(odata.results);
+//                     console.log(odata.results[0].ID);
+//                     oEntry.ID = odata.results[0].ID + 1;
+//                     console.log(oEntry.ID);
+//                     // odata.results.forEach(ele=>{
+//                     //     statusCount[ele.ID].totalCount = statusCount[ele.ID].totalCount+1;
+//                     //});
+//                    //console.log(statusCount);
+//                    // var last_nr = length
+//                     //console.log(last_nr);
+//                     // var statusOModel = new JSONModel({data: statusCount});
+//                     // view.setModel(statusOModel,"status");
+//                 }
+//             });
+
+
+            
+
+//             oModel.create("/Products", oCat, {
+//              success: function () { MessageToast.show("Success!"); }, 
+//             error: function (oError) { MessageToast.show("Something went wrong!"); }
+//             });
+//              this .oApproveDialog.destroy();
+//             }.bind(this)
+//              }), 
+//             endButton: new Button ({
+//              text: "Cancel", 
+//             press: function () {
+//              this .oApproveDialog.destroy();
+//             }.bind(this)
+//             })
+//             });
+//             this .oApproveDialog.open();
+//             },
 
             
 
