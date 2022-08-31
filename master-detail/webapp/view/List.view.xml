@@ -86,7 +86,7 @@
                         <Button
                             id="addCatButton"
                             press=".onAddCategoryClick"
-                            icon="Add category"
+                            text="Add category"
                             type="Accept"/>
 
                     </OverflowToolbar>

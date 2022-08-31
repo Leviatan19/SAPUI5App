@@ -38,6 +38,18 @@
                             titleStyle="H3"
                             level="H3"/>
                     </Toolbar>
+                    <OverflowToolbar>
+                        <ToolbarSpacer/>
+                        
+                        
+
+                        <Button
+                            id="addProdButton"
+                            press=".onAddProductClick"
+                            text="Add product"
+                            type="Accept"/>
+
+                    </OverflowToolbar>
                 </headerToolbar>
                 <columns>
                     <Column>

@@ -2,8 +2,23 @@ sap.ui.define([
     "./BaseController",
     "sap/ui/model/json/JSONModel",
     "../model/formatter",
+    "sap/ui/model/Filter",
+    "sap/ui/model/Sorter",
+    "sap/ui/model/FilterOperator",
+    "sap/m/GroupHeaderListItem",
+    "sap/ui/Device",
+    "sap/ui/core/Fragment",
+    "../model/formatter",
+    "sap/m/Dialog",
+    "sap/m/DialogType", 
+    "sap/m/Button", 
+    "sap/m/ButtonType", 
+    "sap/m/Text", 
+    "sap/m/MessageToast", 
+    "sap/m/MessageBox", 
+    "sap/m/Input",
     "sap/m/library"
-], function (BaseController, JSONModel, formatter, mobileLibrary) {
+], function (BaseController, JSONModel, formatter, mobileLibrary, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input) {
     "use strict";
 
     // shortcut for sap.m.URLHelper
@@ -198,6 +213,92 @@ sap.ui.define([
         /**
          * Toggle between full and non full screen mode.
          */
+
+
+        // onAddProductClick: function() { 
+        //     this.oApproveDialog = new Dialog({
+        //      type: DialogType.Message, 
+        //     title: "Add product", 
+        //     content: new Input({
+        //      id: "nameInput" 
+        //     }),
+        //     beginButton: new Button({
+        //      type: ButtonType.Emphasized, 
+        //     text: "Submit", 
+        //     press: function () {
+        //       var oCat = {
+        //     "ID": Math.floor(Math. random() * 101) + 5,
+        //     "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+        //     } 
+        //     var oModel = this.getView().getModel();
+        //     oModel.create("/Product", oCat, {
+        //      success: function () { MessageToast.show("Success!"); }, 
+        //     error: function (oError) { MessageToast.show("Something went wrong!"); }
+        //     });
+        //      this .oApproveDialog.destroy();
+        //     }.bind(this)
+        //      }), 
+        //     endButton: new Button ({
+        //      text: "Cancel", 
+        //     press: function () {
+        //      this .oApproveDialog.destroy();
+        //     }.bind(this)
+        //     })
+        //     });
+        //     this .oApproveDialog.open();
+        //     },
+
+          onAddProductClick: function() { 
+            this.oApproveDialog = new Dialog({
+             type: DialogType.Message, 
+            title: "Add product", 
+            content: new Input({
+             id: "nameInput" 
+            }),
+
+         
+
+            // content: new Input({
+            //     id: "descriptionInput" 
+            //    }),
+            beginButton: new Button({
+             type: ButtonType.Emphasized, 
+            text: "Submit", 
+            press: function () {
+              var oCat = {
+            "ID": Math.floor(Math. random() * 101) + 5,
+            "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue(), 
+            // // "Description": this.oApproveDialog.getContent()[1].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[1].getValue()
+            // "Description": this.getView().byId("decsriptioninput").getValue()
+            } 
+
+           
+
+
+
+            var oModel = this.getView().getModel();
+            oModel.create("/Products", oCat, {
+             success: function () { MessageToast.show("Success!"); }, 
+            error: function (oError) { MessageToast.show("Something went wrong!"); }
+            });
+             this .oApproveDialog.destroy();
+            }.bind(this)
+             }), 
+            endButton: new Button ({
+             text: "Cancel", 
+            press: function () {
+             this .oApproveDialog.destroy();
+            }.bind(this)
+            })
+            });
+            this .oApproveDialog.open();
+            },
+
+            
+
+
+
+
         toggleFullScreen: function () {
             var bFullScreen = this.getModel("appView").getProperty("/actionButtonsInfo/midColumn/fullScreen");
             this.getModel("appView").setProperty("/actionButtonsInfo/midColumn/fullScreen", !bFullScreen);
@@ -209,7 +310,16 @@ sap.ui.define([
                 // reset to previous layout
                 this.getModel("appView").setProperty("/layout",  this.getModel("appView").getProperty("/previousLayout"));
             }
-        }
+        },
+
+
+
+
+
+        
+ 
+
+        
     });
 
 });
