@@ -35,9 +35,9 @@ sap.ui.define([
          */
 
         onDeleteClick: function(oEvent) {
-            //Tu się wysypuje - po kliknięciu ok nie prxechodzi dalej
-            if (MessageBox.confirm("Do you want to delete category?") == true) {
-            //Zawsze jest false
+            console.log(oEvent);
+            if ((confirm("Are you sure you want to delete record?"))) {
+            
                 const clickedItemPath = oEvent.getSource().getBindingContext().getPath();	
                 var oModel = this.getView().getModel();
                 oModel.remove(clickedItemPath, {
@@ -53,7 +53,7 @@ sap.ui.define([
             }
             //Cały czas jest false
             else {
-               // MessageBox.success("Unlucky");
+               MessageBox.success("Unlucky");
             }
         },
 

@@ -57,8 +57,11 @@ sap.ui.define([
          * @public
          */
         onDeleteClick: function(oEvent) {
-            const clickedItemPath = oEvent.getSource().getBindingContext().getPath();	
+            const clickedItemPath = oEvent.getSource().getBindingContext().getPath();
             var oModel = this.getView().getModel();
+            
+            //Update całej kategorii
+
         
             oModel.remove(clickedItemPath, {
                 success: function (data) {
