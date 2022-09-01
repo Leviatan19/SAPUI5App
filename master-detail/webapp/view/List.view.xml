@@ -104,9 +104,8 @@
                         }" >
                         <ObjectAttribute active="true" id="updateId" text="Change name" press=".onUpdateClick" />
 
-                        }"
-                        >
-                        <ObjectAttribute active="true" id="updateId" text="Change name" press=".onUpdateClick" />
+                        
+                        
                         <ObjectAttribute active="true" id="deteteCategory" 
                         text="Delete category" press=".onDeleteClick" />
 

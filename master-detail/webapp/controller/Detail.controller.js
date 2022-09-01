@@ -103,36 +103,39 @@ sap.ui.define([
             const prevPrice = clickedItemObject.Price;
             const prevDescription = clickedItemObject.Description;
             const prevRating = clickedItemObject.Rating;
+            console.log(clickedItemObject)
 
             this.oApproveDialog = new Dialog({
                 type: DialogType.Message,
                 title: "Update",
                 content: [
-                    new sap.m.Label({text:"Name:"}),
-                    new Input({
+                    new sap.m.Label({text: "Name:"}),
+                    new sap.m.Input({
                         id: "nameInput",
-                        value: prevName
+                        value: prevName,
                     }),
-                    new sap.m.Label({text:"Price:"}),
-                    new Input({
+                    new sap.m.Label({text: "Price:"}),
+                    new sap.m.Input({
                         id: "priceInput",
-                        value: prevPrice
+                        value: prevPrice,
                     }),
-                    new sap.m.Label({text:"Description:"}),
-                    new Input({
+                    new sap.m.Label({text: "Description:"}),
+                    new sap.m.Input({
                         id: "descriptionInput",
-                        value: prevDescription
+                        value: prevDescription,
                     }),
-                    new sap.m.Label({text:"Rating:"}),
-                    new Input({
+                    new sap.m.Label({text: "Rating:"}),
+                    new sap.m.Input({
                         id: "ratingInput",
-                        value: prevRating
+                        value: prevRating,
                     }),
                 ], 
+                
                 beginButton: new Button({
                     type: ButtonType.Emphasized,
                     text: "Submit",
                     press: function () {
+                        console.log(prevName)
                         const newUpdate = this.oApproveDialog.getContent()
                         const newName = newUpdate[1].getValue()
                         oModel.read("/Products", {
@@ -153,13 +156,14 @@ sap.ui.define([
                             }.bind(this)
                         });
                     }.bind(this)
+                    
                 }),
                 endButton: new Button({
                     text: "Cancel",
                     press: function() {
                         this.oApproveDialog.destroy();
                     }.bind(this)
-                })
+                }).bind(this)
             });
             this.oApproveDialog.open();
         },

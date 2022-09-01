@@ -64,19 +64,17 @@
                         hAlign="End">
                         <Text text="{i18n>detailLineItemTableUnitNumberColumn}"/>
                     </Column>
+
                     <Column>
-
-                        <Text text="Actions"/> <!--Hard-coded for now-->
-
                         <Text text="Description"/>
                     </Column>
                     <Column>
                         <Text text="Rating"/>
 
                     </Column>
-                                        <Column>
+                    <Column>
                     <Text text="Actions"/> <!--Hard-coded for now-->
-                                        </Column>
+                    </Column>
                 </columns>
                 <items>
                     <ColumnListItem press=".handleRowPress" type="Active">

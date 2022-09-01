@@ -123,19 +123,23 @@ sap.ui.define([
             const clickedItemPath = clickedItemContext.getPath();
             const clickedItemObject = clickedItemContext.getObject();
             const prevName = clickedItemObject.Name;
+            console.log(prevName)
 
             this.oApproveDialog = new Dialog({
                 type: DialogType.Message,
                 title: "Update",
-                content: new Input({
-                    id: "nameInput",
-                    value: prevName
-                }),
+                content: [
+                    new sap.m.Label({text:"Name"}),
+                new sap.m.Input({
+                 id: "nameInput",
+                 value: prevName
+                })
+                ],
                 beginButton: new Button({
                     type: ButtonType.Emphasized,
                     text: "Submit",
                     press: function () {
-                        const newName = this.oApproveDialog.getContent()[0].getValue()
+                        const newName = this.oApproveDialog.getContent()[1].getValue()
                         oModel.read("/Categories", {
                             success: function (data) {
                                 console.log(data.results)
