@@ -288,9 +288,24 @@ sap.ui.define([
                 this.oApproveDialog = new Dialog({
                  type: DialogType.Message, 
                 title: "Add product", 
-                content: new Input({
-                 id: "nameInput" 
-                }),
+                content: [
+                    
+                    new Input({
+                        id: "nameInput"
+                    }),
+                    new Input({
+                        id: "priceInput"
+                    }),
+                    new Input({
+                        id: "descriptionInput"
+                    }),
+                    new Input({
+                        id: "ratingInput"
+                    }),
+                    // new Input({
+                    //     id: "categoryInput"
+                    // })
+                ], 
                 beginButton: new Button({
                  type: ButtonType.Emphasized, 
                 text: "Submit", 
@@ -314,7 +329,14 @@ sap.ui.define([
                     console.log(oEntry.ID);
                     var oCat = {
                         "ID": oEntry.ID,
-                        "Name": that.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[0].getValue() 
+                        "Name": that.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[0].getValue(), 
+                        "Price": that.oApproveDialog.getContent()[1].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[1].getValue(),
+                        "Description": that.oApproveDialog.getContent()[2].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[2].getValue(),
+                        "Rating": that.oApproveDialog.getContent()[3].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[3].getValue(),
+                        "Category": {
+                            "ID": 1,
+                            "Name": "Beverages"
+                            }
                         } ;
                     oModel.create("/Products", oCat, {
                         success: function () { MessageToast.show("Success!");  

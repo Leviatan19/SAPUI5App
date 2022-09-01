@@ -108,6 +108,7 @@
                         "object"
                     ]
                 },
+
                 {
                     "pattern": "Products/{objectId}/Supplier",
                     "name": "supp",
