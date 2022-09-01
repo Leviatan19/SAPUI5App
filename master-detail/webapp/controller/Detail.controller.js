@@ -77,21 +77,10 @@ sap.ui.define([
             this.oApproveDialog = new Dialog({
                 type: DialogType.Message,
                 title: "Update",
-                content: [
-                    new Input({
-                        id: "nameInput",
-                        value: "prevName"
-                    }),
-                    new Input({
-                        id: "priceInput"
-                    }),
-                    new Input({
-                        id: "descriptionInput"
-                    }),
-                    new Input({
-                        id: "ratingInput"
-                    }),
-                ],
+                content: new Input({
+                    id: "nameInput",
+                    value: prevName
+                }),
                 beginButton: new Button({
                     type: ButtonType.Emphasized,
                     text: "Submit",
