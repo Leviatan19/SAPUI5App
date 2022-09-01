@@ -17,7 +17,7 @@
         },
         "dataSources": {
             "mainService": {
-                "uri": "/V2/(S(cdn3qv3tod00ts1nv4ku5fvx))/OData/OData.svc/",
+                "uri": "/V2/(S(njjkoxou1umwr4vnqxmsbauq))/OData/OData.svc/",
                 "type": "OData",
                 "settings": {
                     "annotations": [],
@@ -72,7 +72,9 @@
             "": {
                 "dataSource": "mainService",
                 "preload": true,
-                "settings": {}
+                "settings": {
+                    "useBatch": false
+                }
             }
         },
         "resources": {
