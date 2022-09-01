@@ -18,8 +18,9 @@ sap.ui.define([
     "sap/m/MessageBox", 
     "sap/m/Input",
     "sap/m/FlexBox",
+    "sap/m/Label",
     "sap/m/library"
-], function (BaseController, JSONModel, formatter, mobileLibrary, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input) {
+], function (BaseController, JSONModel, formatter, mobileLibrary, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input, Label) {
     "use strict";
 
     // shortcut for sap.m.URLHelper
@@ -290,16 +291,20 @@ sap.ui.define([
                 title: "Add product", 
                 content: [
                     
+                    new sap.m.Label({text:"Name:"}),
                     new Input({
                         id: "nameInput"
                     }),
-                    new Input({
+                    new sap.m.Label({text:"Price:"}),
+                    new sap.m.Input({
                         id: "priceInput"
                     }),
-                    new Input({
+                    new sap.m.Label({text:"Description:"}),
+                    new sap.m.Input({
                         id: "descriptionInput"
                     }),
-                    new Input({
+                    new sap.m.Label({text:"Rating:"}),
+                    new sap.m.Input({
                         id: "ratingInput"
                     }),
                     // new Input({
@@ -329,14 +334,14 @@ sap.ui.define([
                     console.log(oEntry.ID);
                     var oCat = {
                         "ID": oEntry.ID,
-                        "Name": that.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[0].getValue(), 
-                        "Price": that.oApproveDialog.getContent()[1].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[1].getValue(),
-                        "Description": that.oApproveDialog.getContent()[2].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[2].getValue(),
-                        "Rating": that.oApproveDialog.getContent()[3].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[3].getValue(),
-                        "Category": {
-                            "ID": 1,
-                            "Name": "Beverages"
-                            }
+                        "Name": that.oApproveDialog.getContent()[1].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[1].getValue(), 
+                        "Price": that.oApproveDialog.getContent()[3].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[3].getValue(),
+                        "Description": that.oApproveDialog.getContent()[5].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[5].getValue(),
+                        "Rating": that.oApproveDialog.getContent()[7].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[7].getValue(),
+                        // "Category": {
+                        //     "ID": 1,
+                        //     "Name": "Beverages"
+                        //     }
                         } ;
                     oModel.create("/Products", oCat, {
                         success: function () { MessageToast.show("Success!");  
