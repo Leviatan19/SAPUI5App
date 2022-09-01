@@ -15,6 +15,7 @@ sap.ui.define([
     "sap/m/Text", 
     "sap/m/MessageToast", 
     "sap/m/MessageBox", 
+
     "sap/m/Label",
     "sap/m/Input"
 ], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, formatter, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input, Label) {
@@ -89,7 +90,21 @@ sap.ui.define([
         /* =========================================================== */
         /* event handlers                                              */
         /* =========================================================== */
-
+        onDeleteClick: function(oEvent) {
+            const clickedItemPath = oEvent.getSource().getBindingContext().getPath()
+            var oModel = this.getView().getModel();
+        
+            oModel.remove(clickedItemPath, {
+                success: function (data) {
+                    MessageBox.success("Category has been deleted!", {
+                        title: "Success"
+                    })
+                },
+                error: function (e) {
+                    alert("error");
+                }
+            });
+        },
         /**
          * After list data is available, this handler method updates the
          * list counter

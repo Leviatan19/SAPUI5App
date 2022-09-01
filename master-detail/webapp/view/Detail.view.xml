@@ -20,6 +20,7 @@
                     path: 'ID',
                     formatter: '.formatter.numberUnit'
                 }" />
+            <ObjectAttribute text="Make Change"/>
         </semantic:headerContent>
         <semantic:content>
 
@@ -79,8 +80,10 @@
                                     path: 'Price',
                                     formatter: '.formatter.currencyValue'
                                 }" />
+
                                 <Text text="{Description}"></Text>
                             <Text text="{Rating}"></Text>
+
                         </cells>
                     </ColumnListItem>
                 </items>

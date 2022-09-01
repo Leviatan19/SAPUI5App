@@ -93,13 +93,18 @@
                 </headerToolbar>
                 <items>
                     <ObjectListItem
+                        id="_IDGenObjectListItem1"
                         type="Navigation"
                         press=".onSelectionChange"
                         title="{Name}"
                         number="{
                             path: 'ID',
                             formatter: '.formatter.numberUnit'
-                        }" />
+                        }"
+                        >
+                        <ObjectAttribute active="true" id="deteteCategory" 
+                        text="Delete category" press=".onDeleteClick" />
+                        </ObjectListItem>
                 </items>
             </List>
         </semantic:content>
