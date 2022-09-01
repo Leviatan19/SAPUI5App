@@ -15,8 +15,9 @@ sap.ui.define([
     "sap/m/Text", 
     "sap/m/MessageToast", 
     "sap/m/MessageBox", 
+    "sap/m/Label",
     "sap/m/Input"
-], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, formatter, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input) {
+], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, formatter, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input, Label) {
     "use strict";
 
     return BaseController.extend("masterdetail.controller.List", {
@@ -325,9 +326,12 @@ sap.ui.define([
                 this.oApproveDialog = new Dialog({
                  type: DialogType.Message, 
                 title: "Create category", 
-                content: new Input({
+                content:[
+                new sap.m.Label({text:"Name"}),
+                new sap.m.Input({
                  id: "nameInput" 
-                }),
+                })
+            ],
                 beginButton: new Button({
                  type: ButtonType.Emphasized, 
                 text: "Submit", 
@@ -351,7 +355,7 @@ sap.ui.define([
                     console.log(oEntry.ID);
                     var oCat = {
                         "ID": oEntry.ID,
-                        "Name": that.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[0].getValue() 
+                        "Name": that.oApproveDialog.getContent()[1].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[1].getValue() 
                         } ;
                     oModel.create("/Categories", oCat, {
                         success: function () { MessageToast.show("Success!");  
