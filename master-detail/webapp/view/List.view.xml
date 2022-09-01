@@ -83,6 +83,12 @@
                             icon="sap-icon://group-2"
                             type="Transparent"/>
 
+                        <Button
+                            id="addCatButton"
+                            press=".onAddCategoryClick"
+                            text="Add category"
+                            type="Accept"/>
+
                     </OverflowToolbar>
                 </headerToolbar>
                 <items>

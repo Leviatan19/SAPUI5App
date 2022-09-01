@@ -2,8 +2,25 @@ sap.ui.define([
     "./BaseController",
     "sap/ui/model/json/JSONModel",
     "../model/formatter",
+    "sap/ui/model/Filter",
+    "sap/ui/model/Sorter",
+    "sap/ui/model/FilterOperator",
+    "sap/m/GroupHeaderListItem",
+    "sap/ui/Device",
+    "sap/ui/core/Fragment",
+    "../model/formatter",
+    "sap/m/Dialog",
+    "sap/m/DialogType", 
+    "sap/m/Button", 
+    "sap/m/ButtonType", 
+    "sap/m/Text", 
+    "sap/m/MessageToast", 
+    "sap/m/MessageBox", 
+    "sap/m/Input",
+    "sap/m/FlexBox",
+    "sap/m/Label",
     "sap/m/library"
-], function (BaseController, JSONModel, formatter, mobileLibrary) {
+], function (BaseController, JSONModel, formatter, mobileLibrary, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input, Label) {
     "use strict";
 
     // shortcut for sap.m.URLHelper
@@ -76,6 +93,16 @@ sap.ui.define([
          * @param {object} oEvent an event containing the total number of items in the list
          * @private
          */
+        
+        handleRowPress: function(oEvent){
+            const clickedItem = oEvent.getSource().getBindingContext().getObject()
+            
+            this.getRouter().navTo("supp", { 
+            objectId : clickedItem.ID
+            })
+            },
+
+        
         onListUpdateFinished: function (oEvent) {
             var sTitle,
                 iTotalItems = oEvent.getParameter("total"),
@@ -206,6 +233,269 @@ sap.ui.define([
         /**
          * Toggle between full and non full screen mode.
          */
+
+
+        // onAddProductClick: function() { 
+        //     this.oApproveDialog = new Dialog({
+        //      type: DialogType.Message, 
+        //     title: "Add product", 
+        //     content: new Input({
+        //      id: "nameInput" 
+        //     }),
+        //     beginButton: new Button({
+        //      type: ButtonType.Emphasized, 
+        //     text: "Submit", 
+        //     press: function () {
+        //       var oCat = {
+        //     "ID": Math.floor(Math. random() * 101) + 5,
+        //     "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+        //     } 
+        //     var oModel = this.getView().getModel();
+        //     oModel.create("/Product", oCat, {
+        //      success: function () { MessageToast.show("Success!"); }, 
+        //     error: function (oError) { MessageToast.show("Something went wrong!"); }
+        //     });
+        //      this .oApproveDialog.destroy();
+        //     }.bind(this)
+        //      }), 
+        //     endButton: new Button ({
+        //      text: "Cancel", 
+        //     press: function () {
+        //      this .oApproveDialog.destroy();
+        //     }.bind(this)
+        //     })
+        //     });
+        //     this .oApproveDialog.open();
+        //     },
+
+
+// onAddProductClick: function() { 
+//             this.oApproveDialog = new Dialog({
+//              type: DialogType.Message, 
+//             title: "Add product", 
+//             content: new Input({
+//              id: "nameInput" 
+//             }),
+//             beginButton: new Button({
+//              type: ButtonType.Emphasized, 
+//             text: "Submit", 
+//             press: function () {
+//               var oCat = {
+//             "ID": Math.floor(Math. random() * 101) + 5,
+//             "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+//             } 
+//             var oModel = this.getView().getModel();
+//             oModel.create("/Products", oCat, {
+//              success: function () { MessageToast.show("Success!"); }, 
+//             error: function (oError) { MessageToast.show("Something went wrong!"); }
+//             });
+//              this .oApproveDialog.destroy();
+//             }.bind(this)
+//              }), 
+//             endButton: new Button ({
+//              text: "Cancel", 
+//             press: function () {
+//              this .oApproveDialog.destroy();
+//             }.bind(this)
+//             })
+//             });
+//             this .oApproveDialog.open();
+//             },
+
+
+            onAddProductClick: function() { 
+                this.oApproveDialog = new Dialog({
+                 type: DialogType.Message, 
+                title: "Add product", 
+                content: [
+                    
+                    new sap.m.Label({text:"Name:"}),
+                    new Input({
+                        id: "nameInput"
+                    }),
+                    new sap.m.Label({text:"Price:"}),
+                    new sap.m.Input({
+                        id: "priceInput"
+                    }),
+                    new sap.m.Label({text:"Description:"}),
+                    new sap.m.Input({
+                        id: "descriptionInput"
+                    }),
+                    new sap.m.Label({text:"Rating:"}),
+                    new sap.m.Input({
+                        id: "ratingInput"
+                    }),
+                    // new Input({
+                    //     id: "categoryInput"
+                    // })
+                ], 
+                beginButton: new Button({
+                 type: ButtonType.Emphasized, 
+                text: "Submit", 
+                press: function () {
+                //   var oCat = {
+                // "ID": Math.floor(Math. random() * 101) + 5,
+                // "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+                // } 
+                var oModel = this.getView().getModel();
+
+            var oEntry = {};
+
+                    var that = this;
+
+            oModel.read("/Products",{
+                sorters:  [new sap.ui.model.Sorter("ID",true)],
+                success: function(odata){
+                    console.log(odata.results);
+                    console.log(odata.results[0].ID);
+                    oEntry.ID = odata.results[0].ID + 1;
+                    console.log(oEntry.ID);
+                    var oCat = {
+                        "ID": oEntry.ID,
+                        "Name": that.oApproveDialog.getContent()[1].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[1].getValue(), 
+                        "Price": that.oApproveDialog.getContent()[3].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[3].getValue(),
+                        "Description": that.oApproveDialog.getContent()[5].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[5].getValue(),
+                        "Rating": that.oApproveDialog.getContent()[7].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[7].getValue(),
+                        // "Category": {
+                        //     "ID": 1,
+                        //     "Name": "Beverages"
+                        //     }
+                        } ;
+                    oModel.create("/Products", oCat, {
+                        success: function () { MessageToast.show("Success!");  
+                        that.oApproveDialog.destroy()},
+                       error: function (oError) { MessageToast.show("Something went wrong!"); }
+                       });
+                }
+            });
+
+            // var oCat = {
+            //     // "ID": oEntry.ID,
+            //     "ID": Math.floor(Math. random() * 101) + 5,
+            //     "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+            //     } 
+
+
+
+                // oModel.create("/Categories", oCat, {
+                //  success: function () { MessageToast.show("Success!"); }, 
+                // error: function (oError) { MessageToast.show("Something went wrong!"); }
+                // });
+                //  this .oApproveDialog.destroy();
+                }.bind(this)
+                 }), 
+                endButton: new Button ({
+                 text: "Cancel", 
+                press: function () {
+                 this .oApproveDialog.destroy();
+                }.bind(this)
+                })
+                });
+                this .oApproveDialog.open();
+                },
+
+
+
+
+//           onAddProductClick: function() { 
+//             this.oApproveDialog = new Dialog({
+//              type: DialogType.Message, 
+//             title: "Add product", 
+//             content: new Input({
+//              id: "nameInput" 
+//             }),
+
+            
+
+//             // content: new Input({
+//             //     id: "descriptionInput" 
+//             //    }),
+//             beginButton: new Button({
+//              type: ButtonType.Emphasized, 
+//             text: "Submit", 
+//             press: function () {
+//             //   var oCat = {
+//             // "ID": Math.floor(Math. random() * 101) + 5,
+//             // "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue(), 
+//             // // "Description": this.oApproveDialog.getContent()[1].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[1].getValue()
+//             // "Description": this.getView().byId("decsriptioninput").getValue()
+//             //} 
+//             var oCat = {
+//                 "ID": Math.floor(Math. random() * 101) + 5,
+//                 //"ID": oEntry.ID,oEntry["ID"]
+//                 "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue(), }
+           
+//             // oModel.read("/Products(0)", {
+//             //     success: function () { MessageToast.show("Success!"); }, 
+//             //    error: function (oError) { MessageToast.show("Something went wrong!"); } });//{success: mySuccessHandler, error: myErrorHandler});
+
+
+//              //  oModel.read("/Products(1)", {success: mySuccessHandler, error: myErrorHandler});
+
+            
+            
+            
+            
+            
+//              var oModel = this.getView().getModel();
+
+//             //oModel.read("/Products(1)", {success: mySuccessHandler, error: myErrorHandler});
+
+//             // oModel.read("/Products",{
+// 			// 	//sorters:  [new sap.ui.model.Sorter("ID",true)],
+// 			//  	success: function(odata){
+// 			//  		console.log("MAX ID===",odata.results[0].ID);
+// 			//  		//oEntry.ID = odata.results[1].ID + 1;
+					
+// 			// 		},	
+			 	
+// 			// });
+
+// var oEntry = {};
+
+//             oModel.read("/Products",{
+//                 sorters:  [new sap.ui.model.Sorter("ID",true)],
+//                 success: function(odata){
+//                     console.log(odata.results);
+//                     console.log(odata.results[0].ID);
+//                     oEntry.ID = odata.results[0].ID + 1;
+//                     console.log(oEntry.ID);
+//                     // odata.results.forEach(ele=>{
+//                     //     statusCount[ele.ID].totalCount = statusCount[ele.ID].totalCount+1;
+//                     //});
+//                    //console.log(statusCount);
+//                    // var last_nr = length
+//                     //console.log(last_nr);
+//                     // var statusOModel = new JSONModel({data: statusCount});
+//                     // view.setModel(statusOModel,"status");
+//                 }
+//             });
+
+
+            
+
+//             oModel.create("/Products", oCat, {
+//              success: function () { MessageToast.show("Success!"); }, 
+//             error: function (oError) { MessageToast.show("Something went wrong!"); }
+//             });
+//              this .oApproveDialog.destroy();
+//             }.bind(this)
+//              }), 
+//             endButton: new Button ({
+//              text: "Cancel", 
+//             press: function () {
+//              this .oApproveDialog.destroy();
+//             }.bind(this)
+//             })
+//             });
+//             this .oApproveDialog.open();
+//             },
+
+            
+
+
+
+
         toggleFullScreen: function () {
             var bFullScreen = this.getModel("appView").getProperty("/actionButtonsInfo/midColumn/fullScreen");
             this.getModel("appView").setProperty("/actionButtonsInfo/midColumn/fullScreen", !bFullScreen);
@@ -217,7 +507,16 @@ sap.ui.define([
                 // reset to previous layout
                 this.getModel("appView").setProperty("/layout",  this.getModel("appView").getProperty("/previousLayout"));
             }
-        }
+        },
+
+
+
+
+
+        
+ 
+
+        
     });
 
 });

@@ -14,7 +14,7 @@
                 level="H2"/>
         </semantic:titleHeading>
         <semantic:headerContent>
-            <ObjectAttribute title="{i18n>priceTitle}"/>
+            <ObjectAttribute title="{i18n>Category ID}"/>
             <ObjectNumber
                 number="{
                     path: 'ID',
@@ -39,6 +39,18 @@
                             titleStyle="H3"
                             level="H3"/>
                     </Toolbar>
+                    <OverflowToolbar>
+                        <ToolbarSpacer/>
+                        
+                        
+
+                        <Button
+                            id="addProdButton"
+                            press=".onAddProductClick"
+                            text="Add product"
+                            type="Accept"/>
+
+                    </OverflowToolbar>
                 </headerToolbar>
                 <columns>
                     <Column>
@@ -50,9 +62,15 @@
                         hAlign="End">
                         <Text text="{i18n>detailLineItemTableUnitNumberColumn}"/>
                     </Column>
+                    <Column>
+                        <Text text="Description"/>
+                    </Column>
+                    <Column>
+                        <Text text="Rating"/>
+                    </Column>
                 </columns>
                 <items>
-                    <ColumnListItem>
+                    <ColumnListItem press=".handleRowPress" type="Active">
                         <cells>
                             <ObjectIdentifier
                                 title="{Name}"
@@ -62,8 +80,10 @@
                                     path: 'Price',
                                     formatter: '.formatter.currencyValue'
                                 }" />
-                            <ObjectAttribute active="true" id="deteteProduct" 
-                                text="Delete product" press=".onDeleteClick" />
+
+                                <Text text="{Description}"></Text>
+                            <Text text="{Rating}"></Text>
+
                         </cells>
                     </ColumnListItem>
                 </items>
