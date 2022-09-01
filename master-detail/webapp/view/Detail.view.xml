@@ -14,13 +14,15 @@
                 level="H2"/>
         </semantic:titleHeading>
         <semantic:headerContent>
-            <ObjectAttribute title="{i18n>priceTitle}"/>
+            <ObjectAttribute title="{i18n>Category ID}"/>
             <ObjectNumber
                 number="{
                     path: 'ID',
                     formatter: '.formatter.numberUnit'
                 }" />
+
                 
+
         </semantic:headerContent>
         <semantic:content>
 
@@ -39,6 +41,18 @@
                             titleStyle="H3"
                             level="H3"/>
                     </Toolbar>
+                    <OverflowToolbar>
+                        <ToolbarSpacer/>
+                        
+                        
+
+                        <Button
+                            id="addProdButton"
+                            press=".onAddProductClick"
+                            text="Add product"
+                            type="Accept"/>
+
+                    </OverflowToolbar>
                 </headerToolbar>
                 <columns>
                     <Column>
@@ -51,11 +65,21 @@
                         <Text text="{i18n>detailLineItemTableUnitNumberColumn}"/>
                     </Column>
                     <Column>
+
                         <Text text="Actions"/> <!--Hard-coded for now-->
+
+                        <Text text="Description"/>
                     </Column>
+                    <Column>
+                        <Text text="Rating"/>
+
+                    </Column>
+                                        <Column>
+                    <Text text="Actions"/> <!--Hard-coded for now-->
+                                        </Column>
                 </columns>
                 <items>
-                    <ColumnListItem>
+                    <ColumnListItem press=".handleRowPress" type="Active">
                         <cells>
                             <ObjectIdentifier
                                 title="{Name}"
@@ -66,8 +90,16 @@
                                     path: 'Price',
                                     formatter: '.formatter.currencyValue'
                                 }" />
-                                <ObjectAttribute active="true" id="updateId" text="Edit Product" press=".onUpdateClick"  />
+
                                 
+                                
+
+
+                                <Text text="{Description}"></Text>
+                            <Text text="{Rating}"></Text>
+                            <ObjectAttribute active="true" id="updateId" text="Edit Product" press=".onUpdateClick"  />
+
+
                         </cells>
                     </ColumnListItem>
                 </items>

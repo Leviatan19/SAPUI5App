@@ -17,7 +17,7 @@
         },
         "dataSources": {
             "mainService": {
-                "uri": "/V2/(S(njjkoxou1umwr4vnqxmsbauq))/OData/OData.svc/",
+                "uri": "/V2/(S(2xheqlbq0u04sy13ojvdspk3))/OData/OData.svc/",
                 "type": "OData",
                 "settings": {
                     "annotations": [],
@@ -107,7 +107,14 @@
                         "list",
                         "object"
                     ]
+                },
+
+                {
+                    "pattern": "Products/{objectId}/Supplier",
+                    "name": "supp",
+                    "target": "supp"
                 }
+
             ],
             "targets": {
                 "list": {
@@ -121,6 +128,11 @@
                     "viewLevel": 1,
                     "controlAggregation": "midColumnPages"
                 },
+                "supp": {
+                    "viewName": "Supplier",
+                    "viewId": "supplier"
+                },
+
                 "detailObjectNotFound": {
                     "viewName": "DetailObjectNotFound",
                     "viewId": "detailObjectNotFound",
