@@ -73,26 +73,48 @@ sap.ui.define([
             const clickedItemPath = clickedItemContext.getPath();
             const clickedItemObject = clickedItemContext.getObject();
             const prevName = clickedItemObject.Name;
+            const prevPrice = clickedItemObject.Price;
+            const prevDescription = clickedItemObject.Description;
+            const prevRating = clickedItemObject.Rating;
 
             this.oApproveDialog = new Dialog({
                 type: DialogType.Message,
                 title: "Update",
-                content: new Input({
-                    id: "nameInput",
-                    value: prevName
-                }),
+                content: [
+                    new sap.m.Label({text:"Name:"}),
+                    new Input({
+                        id: "nameInput",
+                        value: prevName
+                    }),
+                    new sap.m.Label({text:"Price:"}),
+                    new Input({
+                        id: "priceInput",
+                        value: prevPrice
+                    }),
+                    new sap.m.Label({text:"Description:"}),
+                    new Input({
+                        id: "descriptionInput",
+                        value: prevDescription
+                    }),
+                    new sap.m.Label({text:"Rating:"}),
+                    new Input({
+                        id: "ratingInput",
+                        value: prevRating
+                    }),
+                ], 
                 beginButton: new Button({
                     type: ButtonType.Emphasized,
                     text: "Submit",
                     press: function () {
-                        const newName = this.oApproveDialog.getContent()[0].getValue()
+                        const newUpdate = this.oApproveDialog.getContent()
+                        const newName = newUpdate[1].getValue()
                         oModel.read("/Products", {
                             success: function (data) {
                                 console.log(data.results)
                                 const isNameFree = !data.results?.find(cat => cat.Name === newName);
 
                                 if (isNameFree) {
-                                    this._updateConfirmDialog(prevName, newName, clickedItemPath);
+                                    this._updateConfirmDialog(prevName, newUpdate, clickedItemPath);
                                 } else {
                                     console.log("is not free")
                                     MessageBox.error("Product with that name already exists!", {
@@ -114,8 +136,13 @@ sap.ui.define([
             });
             this.oApproveDialog.open();
         },
-        _updateConfirmDialog: function(prevName, newName, clickedItemPath){
+        _updateConfirmDialog: function(prevName, newUpdate, clickedItemPath){
             var oModel = this.getView().getModel();
+            var newName = newUpdate[1].getValue()
+            var newPrice = newUpdate[3].getValue()
+            var newDescription = newUpdate[5].getValue()
+            var newRating = newUpdate[7].getValue()
+            console.log(newName)
 
             this.oConfirmDialog = new Dialog({
                 type: DialogType.Message,
@@ -127,7 +154,13 @@ sap.ui.define([
                     type: ButtonType.Accept,
                     text: "Yes",
                     press: function () {
-                        var oCat = {"Name": newName}
+                        var oCat = {
+                            "Name": newName,
+                            "Price": newPrice,
+                            "Description": newDescription,
+                            "Rating": newRating,
+
+                    }
                         oModel.update(clickedItemPath, oCat, {
                             merge: true, /* if set to true: PATCH/MERGE/ */
                             success: function () {MessageToast.show("Success!");},
