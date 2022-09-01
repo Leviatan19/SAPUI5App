@@ -352,16 +352,48 @@ sap.ui.define([
                     console.log(odata.results);
                     console.log(odata.results[0].ID);
                     oEntry.ID = odata.results[0].ID + 1;
-                    console.log(oEntry.ID);
+                    console.log(oEntry.ID);                    
                     var oCat = {
                         "ID": oEntry.ID,
                         "Name": that.oApproveDialog.getContent()[1].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[1].getValue() 
                         } ;
-                    oModel.create("/Categories", oCat, {
-                        success: function () { MessageToast.show("Success!");  
-                        that.oApproveDialog.destroy()},
-                       error: function (oError) { MessageToast.show("Something went wrong!"); }
-                       });
+
+                        
+                        const newName = that.oApproveDialog.getContent()[1].getValue()
+                        oModel.read("/Categories", {
+                            success: function (data) {
+                                console.log(data.results)
+                                const isNameFree = !data.results?.find(cat => cat.Name === newName);
+
+                                if (isNameFree)  {
+                                    oModel.create("/Categories", oCat, {
+                                        success: function () { MessageToast.show("Success!");  
+                                        that.oApproveDialog.destroy()},
+                                       error: function (oError) { MessageToast.show("Something went wrong!"); }
+                                       });}
+                                    else
+                                
+                                {
+                                    //console.log("is not free")
+                                    MessageBox.error("Category with that name already exists!", {
+                                        title: "Error"
+                                    })
+                                }
+                                that.oApproveDialog.destroy();
+
+                            }//.bind(this)
+                        });
+
+
+
+
+
+
+                    // oModel.create("/Categories", oCat, {
+                    //     success: function () { MessageToast.show("Success!");  
+                    //     that.oApproveDialog.destroy()},
+                    //    error: function (oError) { MessageToast.show("Something went wrong!"); }
+                    //    });
                 }
             });
 
