@@ -20,7 +20,9 @@
                     path: 'ID',
                     formatter: '.formatter.numberUnit'
                 }" />
-            <ObjectAttribute text="Make Change"/>
+
+                
+
         </semantic:headerContent>
         <semantic:content>
 
@@ -62,11 +64,16 @@
                         hAlign="End">
                         <Text text="{i18n>detailLineItemTableUnitNumberColumn}"/>
                     </Column>
+
                     <Column>
                         <Text text="Description"/>
                     </Column>
                     <Column>
                         <Text text="Rating"/>
+
+                    </Column>
+                    <Column>
+                    <Text text="Actions"/> <!--Hard-coded for now-->
                     </Column>
                 </columns>
                 <items>
@@ -75,14 +82,21 @@
                             <ObjectIdentifier
                                 title="{Name}"
                                 text="{ID}"/>
+                                
                             <ObjectNumber
                                 number="{
                                     path: 'Price',
                                     formatter: '.formatter.currencyValue'
                                 }" />
 
+                                
+                                
+
+
                                 <Text text="{Description}"></Text>
                             <Text text="{Rating}"></Text>
+                            <ObjectAttribute active="true" id="updateId" text="Edit Product" press=".onUpdateClick"  />
+
 
                         </cells>
                     </ColumnListItem>

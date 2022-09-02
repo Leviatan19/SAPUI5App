@@ -1,6 +1,12 @@
 sap.ui.define([
     "./BaseController",
     "sap/ui/model/json/JSONModel",
+    "sap/ui/model/Filter",
+    "sap/ui/model/Sorter",
+    "sap/ui/model/FilterOperator",
+    "sap/m/GroupHeaderListItem",
+    "sap/ui/Device",
+    "sap/ui/core/Fragment",
     "../model/formatter",
     "sap/ui/model/Filter",
     "sap/ui/model/Sorter",
@@ -85,6 +91,124 @@ sap.ui.define([
                 oViewModel.getProperty("/shareSendEmailSubject"),
                 oViewModel.getProperty("/shareSendEmailMessage")
             );
+        },
+
+        onUpdateClick: function(oEvent){
+            var oModel = this.getView().getModel();
+
+            const clickedItemContext = oEvent.getSource().getBindingContext()
+            const clickedItemPath = clickedItemContext.getPath();
+            const clickedItemObject = clickedItemContext.getObject();
+            const prevName = clickedItemObject.Name;
+            const prevPrice = clickedItemObject.Price;
+            const prevDescription = clickedItemObject.Description;
+            const prevRating = clickedItemObject.Rating;
+            console.log(clickedItemObject)
+
+            this.oApproveDialog = new Dialog({
+                type: DialogType.Message,
+                title: "Update",
+                content: [
+                    new sap.m.Label({text: "Name:"}),
+                    new sap.m.Input({
+                        id: "nameInput",
+                        value: prevName,
+                    }),
+                    new sap.m.Label({text: "Price:"}),
+                    new sap.m.Input({
+                        id: "priceInput",
+                        value: prevPrice,
+                    }),
+                    new sap.m.Label({text: "Description:"}),
+                    new sap.m.Input({
+                        id: "descriptionInput",
+                        value: prevDescription,
+                    }),
+                    new sap.m.Label({text: "Rating:"}),
+                    new sap.m.Input({
+                        id: "ratingInput",
+                        value: prevRating,
+                    }),
+                ], 
+                
+                beginButton: new Button({
+                    type: ButtonType.Emphasized,
+                    text: "Submit",
+                    press: function () {
+                        console.log(prevName)
+                        const newUpdate = this.oApproveDialog.getContent()
+                        const newName = newUpdate[1].getValue()
+                        oModel.read("/Products", {
+                            success: function (data) {
+                                console.log(data.results)
+                                const isNameFree = !data.results?.find(cat => cat.Name === newName);
+
+                                if (isNameFree) {
+                                    this._updateConfirmDialog(prevName, newUpdate, clickedItemPath);
+                                } else {
+                                    console.log("is not free")
+                                    MessageBox.error("Product with that name already exists!", {
+                                        title: "Error"
+                                    })
+                                }
+                                this.oApproveDialog.destroy();
+
+                            }.bind(this)
+                        });
+                    }.bind(this)
+                    
+                }),
+                endButton: new Button({
+                    text: "Cancel",
+                    press: function() {
+                        this.oApproveDialog.destroy();
+                    }.bind(this)
+                }).bind(this)
+            });
+            this.oApproveDialog.open();
+        },
+        _updateConfirmDialog: function(prevName, newUpdate, clickedItemPath){
+            var oModel = this.getView().getModel();
+            var newName = newUpdate[1].getValue()
+            var newPrice = newUpdate[3].getValue()
+            var newDescription = newUpdate[5].getValue()
+            var newRating = newUpdate[7].getValue()
+            console.log(newName)
+
+            this.oConfirmDialog = new Dialog({
+                type: DialogType.Message,
+                title: "Confirmation",
+                content: new Text({
+                    text: `Are you sure you want to rename product from ${prevName} to ${newName}?`
+                }),
+                beginButton: new Button({
+                    type: ButtonType.Accept,
+                    text: "Yes",
+                    press: function () {
+                        var oCat = {
+                            "Name": newName,
+                            "Price": newPrice,
+                            "Description": newDescription,
+                            "Rating": newRating,
+
+                    }
+                        oModel.update(clickedItemPath, oCat, {
+                            merge: true, /* if set to true: PATCH/MERGE/ */
+                            success: function () {MessageToast.show("Success!");},
+                            error: function (oError) {MessageToast.show("Something went wrong!");}
+                        });
+                        this.oConfirmDialog.destroy();
+                    }.bind(this)
+                }),
+                endButton: new Button({
+                    text: "No",
+                    type: ButtonType.Reject,
+                    press: function () {
+                        this.oConfirmDialog.destroy();
+                    }.bind(this)
+                })
+            });
+            this.oConfirmDialog.open();
         },
 
         

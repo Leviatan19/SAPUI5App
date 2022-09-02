@@ -9,7 +9,7 @@ sap.ui.define([
     "sap/ui/core/Fragment",
     "../model/formatter",
     "sap/m/Dialog",
-    "sap/m/DialogType", 
+    "sap/m/DialogType",
     "sap/m/Button", 
     "sap/m/ButtonType", 
     "sap/m/Text", 
@@ -116,6 +116,90 @@ sap.ui.define([
             this._updateListItemCount(oEvent.getParameter("total"));
         },
 
+        onUpdateClick: function(oEvent){
+            var oModel = this.getView().getModel();
+
+            const clickedItemContext = oEvent.getSource().getBindingContext()
+            const clickedItemPath = clickedItemContext.getPath();
+            const clickedItemObject = clickedItemContext.getObject();
+            const prevName = clickedItemObject.Name;
+            console.log(prevName)
+
+            this.oApproveDialog = new Dialog({
+                type: DialogType.Message,
+                title: "Update",
+                content: [
+                    new sap.m.Label({text:"Name"}),
+                new sap.m.Input({
+                 id: "nameInput",
+                 value: prevName
+                })
+                ],
+                beginButton: new Button({
+                    type: ButtonType.Emphasized,
+                    text: "Submit",
+                    press: function () {
+                        const newName = this.oApproveDialog.getContent()[1].getValue()
+                        oModel.read("/Categories", {
+                            success: function (data) {
+                                console.log(data.results)
+                                const isNameFree = !data.results?.find(cat => cat.Name === newName);
+
+                                if (isNameFree) {
+                                    this._updateConfirmDialog(prevName, newName, clickedItemPath);
+                                } else {
+                                    console.log("is not free")
+                                    MessageBox.error("Category with that name already exists!", {
+                                        title: "Error"
+                                    })
+                                }
+                                this.oApproveDialog.destroy();
+
+                            }.bind(this)
+                        });
+                    }.bind(this)
+                }),
+                endButton: new Button({
+                    text: "Cancel",
+                    press: function() {
+                        this.oApproveDialog.destroy();
+                    }.bind(this)
+                })
+            });
+            this.oApproveDialog.open();
+        },
+        _updateConfirmDialog: function(prevName, newName, clickedItemPath){
+            var oModel = this.getView().getModel();
+
+            this.oConfirmDialog = new Dialog({
+                type: DialogType.Message,
+                title: "Confirmation",
+                content: new Text({
+                    text: `Are you sure you want to rename category from ${prevName} to ${newName}?`
+                }),
+                beginButton: new Button({
+                    type: ButtonType.Accept,
+                    text: "Yes",
+                    press: function () {
+                        var oCat = {"Name": newName}
+                        oModel.update(clickedItemPath, oCat, {
+                            merge: true, /* if set to true: PATCH/MERGE/ */
+                            success: function () {MessageToast.show("Success!");},
+                            error: function (oError) {MessageToast.show("Something went wrong!");}
+                        });
+                        this.oConfirmDialog.destroy();
+                    }.bind(this)
+                }),
+                endButton: new Button({
+                    text: "No",
+                    type: ButtonType.Reject,
+                    press: function () {
+                        this.oConfirmDialog.destroy();
+                    }.bind(this)
+                })
+            });
+            this.oConfirmDialog.open();
+        },
         /**
          * Event handler for the list search field. Applies current
          * filter value and triggers a new search. If the search field's
