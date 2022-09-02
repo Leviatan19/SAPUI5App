@@ -9,16 +9,15 @@ sap.ui.define([
     "sap/ui/core/Fragment",
     "../model/formatter",
     "sap/m/Dialog",
-    "sap/m/DialogType", 
+    "sap/m/DialogType",
     "sap/m/Button", 
     "sap/m/ButtonType", 
     "sap/m/Text", 
     "sap/m/MessageToast", 
     "sap/m/MessageBox", 
+    "sap/m/Label",
     "sap/m/Input"
-
-], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, 
-    formatter, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input) {
+], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, formatter, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input, Label) {
     "use strict";
 
     return BaseController.extend("masterdetail.controller.List", {
@@ -114,7 +113,21 @@ sap.ui.define([
         /* =========================================================== */
         /* event handlers                                              */
         /* =========================================================== */
-
+        onDeleteClick: function(oEvent) {
+            const clickedItemPath = oEvent.getSource().getBindingContext().getPath()
+            var oModel = this.getView().getModel();
+        
+            oModel.remove(clickedItemPath, {
+                success: function (data) {
+                    MessageBox.success("Category has been deleted!", {
+                        title: "Success"
+                    })
+                },
+                error: function (e) {
+                    alert("error");
+                }
+            });
+        },
         /**
          * After list data is available, this handler method updates the
          * list counter
@@ -126,6 +139,90 @@ sap.ui.define([
             this._updateListItemCount(oEvent.getParameter("total"));
         },
 
+        onUpdateClick: function(oEvent){
+            var oModel = this.getView().getModel();
+
+            const clickedItemContext = oEvent.getSource().getBindingContext()
+            const clickedItemPath = clickedItemContext.getPath();
+            const clickedItemObject = clickedItemContext.getObject();
+            const prevName = clickedItemObject.Name;
+            console.log(prevName)
+
+            this.oApproveDialog = new Dialog({
+                type: DialogType.Message,
+                title: "Update",
+                content: [
+                    new sap.m.Label({text:"Name"}),
+                new sap.m.Input({
+                 id: "nameInput",
+                 value: prevName
+                })
+                ],
+                beginButton: new Button({
+                    type: ButtonType.Emphasized,
+                    text: "Submit",
+                    press: function () {
+                        const newName = this.oApproveDialog.getContent()[1].getValue()
+                        oModel.read("/Categories", {
+                            success: function (data) {
+                                console.log(data.results)
+                                const isNameFree = !data.results?.find(cat => cat.Name === newName);
+
+                                if (isNameFree) {
+                                    this._updateConfirmDialog(prevName, newName, clickedItemPath);
+                                } else {
+                                    console.log("is not free")
+                                    MessageBox.error("Category with that name already exists!", {
+                                        title: "Error"
+                                    })
+                                }
+                                this.oApproveDialog.destroy();
+
+                            }.bind(this)
+                        });
+                    }.bind(this)
+                }),
+                endButton: new Button({
+                    text: "Cancel",
+                    press: function() {
+                        this.oApproveDialog.destroy();
+                    }.bind(this)
+                })
+            });
+            this.oApproveDialog.open();
+        },
+        _updateConfirmDialog: function(prevName, newName, clickedItemPath){
+            var oModel = this.getView().getModel();
+
+            this.oConfirmDialog = new Dialog({
+                type: DialogType.Message,
+                title: "Confirmation",
+                content: new Text({
+                    text: `Are you sure you want to rename category from ${prevName} to ${newName}?`
+                }),
+                beginButton: new Button({
+                    type: ButtonType.Accept,
+                    text: "Yes",
+                    press: function () {
+                        var oCat = {"Name": newName}
+                        oModel.update(clickedItemPath, oCat, {
+                            merge: true, /* if set to true: PATCH/MERGE/ */
+                            success: function () {MessageToast.show("Success!");},
+                            error: function (oError) {MessageToast.show("Something went wrong!");}
+                        });
+                        this.oConfirmDialog.destroy();
+                    }.bind(this)
+                }),
+                endButton: new Button({
+                    text: "No",
+                    type: ButtonType.Reject,
+                    press: function () {
+                        this.oConfirmDialog.destroy();
+                    }.bind(this)
+                })
+            });
+            this.oConfirmDialog.open();
+        },
         /**
          * Event handler for the list search field. Applies current
          * filter value and triggers a new search. If the search field's
@@ -312,6 +409,143 @@ sap.ui.define([
         /* =========================================================== */
         /* begin: internal methods                                     */
         /* =========================================================== */
+
+        // onAddCategoryClick: function() { 
+        //     this.oApproveDialog = new Dialog({
+        //      type: DialogType.Message, 
+        //     title: "Create category", 
+        //     content: new Input({
+        //      id: "nameInput" 
+        //     }),
+        //     beginButton: new Button({
+        //      type: ButtonType.Emphasized, 
+        //     text: "Submit", 
+        //     press: function () {
+        //       var oCat = {
+        //     "ID": Math.floor(Math. random() * 101) + 5,
+        //     "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+        //     } 
+        //     var oModel = this.getView().getModel();
+        //     oModel.create("/Categories", oCat, {
+        //      success: function () { MessageToast.show("Success!"); }, 
+        //     error: function (oError) { MessageToast.show("Something went wrong!"); }
+        //     });
+        //      this .oApproveDialog.destroy();
+        //     }.bind(this)
+        //      }), 
+        //     endButton: new Button ({
+        //      text: "Cancel", 
+        //     press: function () {
+        //      this .oApproveDialog.destroy();
+        //     }.bind(this)
+        //     })
+        //     });
+        //     this .oApproveDialog.open();
+        //     },
+        
+        
+        onAddCategoryClick: function() { 
+                this.oApproveDialog = new Dialog({
+                 type: DialogType.Message, 
+                title: "Create category", 
+                content:[
+                new sap.m.Label({text:"Name"}),
+                new sap.m.Input({
+                 id: "nameInput" 
+                })
+            ],
+                beginButton: new Button({
+                 type: ButtonType.Emphasized, 
+                text: "Submit", 
+                press: function () {
+                //   var oCat = {
+                // "ID": Math.floor(Math. random() * 101) + 5,
+                // "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+                // } 
+                var oModel = this.getView().getModel();
+
+            var oEntry = {};
+
+                    var that = this;
+
+            oModel.read("/Categories",{
+                sorters:  [new sap.ui.model.Sorter("ID",true)],
+                success: function(odata){
+                    console.log(odata.results);
+                    console.log(odata.results[0].ID);
+                    oEntry.ID = odata.results[0].ID + 1;
+                    console.log(oEntry.ID);                    
+                    var oCat = {
+                        "ID": oEntry.ID,
+                        "Name": that.oApproveDialog.getContent()[1].getValue().length === 0 ? "Default" : that.oApproveDialog.getContent()[1].getValue() 
+                        } ;
+
+                        
+                        const newName = that.oApproveDialog.getContent()[1].getValue()
+                        oModel.read("/Categories", {
+                            success: function (data) {
+                                console.log(data.results)
+                                const isNameFree = !data.results?.find(cat => cat.Name === newName);
+
+                                if (isNameFree)  {
+                                    oModel.create("/Categories", oCat, {
+                                        success: function () { MessageToast.show("Success!");  
+                                        that.oApproveDialog.destroy()},
+                                       error: function (oError) { MessageToast.show("Something went wrong!"); }
+                                       });}
+                                    else
+                                
+                                {
+                                    //console.log("is not free")
+                                    MessageBox.error("Category with that name already exists!", {
+                                        title: "Error"
+                                    })
+                                }
+                                that.oApproveDialog.destroy();
+
+                            }//.bind(this)
+                        });
+
+
+
+
+
+
+                    // oModel.create("/Categories", oCat, {
+                    //     success: function () { MessageToast.show("Success!");  
+                    //     that.oApproveDialog.destroy()},
+                    //    error: function (oError) { MessageToast.show("Something went wrong!"); }
+                    //    });
+                }
+            });
+
+            // var oCat = {
+            //     // "ID": oEntry.ID,
+            //     "ID": Math.floor(Math. random() * 101) + 5,
+            //     "Name": this.oApproveDialog.getContent()[0].getValue().length === 0 ? "Default" : this.oApproveDialog.getContent()[0].getValue() 
+            //     } 
+
+
+
+                // oModel.create("/Categories", oCat, {
+                //  success: function () { MessageToast.show("Success!"); }, 
+                // error: function (oError) { MessageToast.show("Something went wrong!"); }
+                // });
+                //  this .oApproveDialog.destroy();
+                }.bind(this)
+                 }), 
+                endButton: new Button ({
+                 text: "Cancel", 
+                press: function () {
+                 this .oApproveDialog.destroy();
+                }.bind(this)
+                })
+                });
+                this .oApproveDialog.open();
+                },
+
+
+
 
 
         _createViewModel: function() {

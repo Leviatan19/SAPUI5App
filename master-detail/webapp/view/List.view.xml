@@ -83,18 +83,31 @@
                             icon="sap-icon://group-2"
                             type="Transparent"/>
 
+                        <Button
+                            id="addCatButton"
+                            press=".onAddCategoryClick"
+                            text="Add category"
+                            type="Accept"/>
+
                     </OverflowToolbar>
                 </headerToolbar>
                 <items>
                     <ObjectListItem
+                        id="_IDGenObjectListItem1"
                         type="Navigation"
                         press=".onSelectionChange"
                         title="{Name}"
                         number="{
                             path: 'ID',
                             formatter: '.formatter.numberUnit'
+
                         }" >
+                        <ObjectAttribute active="true" id="updateId" text="Change name" press=".onUpdateClick" />
+
+                        
+                        
                         <ObjectAttribute active="true" id="deleteId" text="Delete" press=".onDeleteClick"/>
+
                         </ObjectListItem>
                 </items>
             </List>
