@@ -436,7 +436,7 @@ sap.ui.define([
                 content: [
                     
                     new sap.m.Label({text:"Name:"}),
-                    new Input({
+                    new sap.m.Input({
                         id: "nameInput"
                     }),
                     new sap.m.Label({text:"Price:"}),
