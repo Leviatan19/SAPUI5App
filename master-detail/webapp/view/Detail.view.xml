@@ -96,6 +96,7 @@
                                 <Text text="{Description}"></Text>
                             <Text text="{Rating}"></Text>
                             <ObjectAttribute active="true" id="updateId" text="Edit Product" press=".onUpdateClick"  />
+                            <ObjectAttribute active="true" id="deleteId" text="Delete" press=".onDeleteClick"  />
 
 
                         </cells>

@@ -106,8 +106,7 @@
 
                         
                         
-                        <ObjectAttribute active="true" id="deteteCategory" 
-                        text="Delete category" press=".onDeleteClick" />
+                        <ObjectAttribute active="true" id="deleteId" text="Delete" press=".onDeleteClick"/>
 
                         </ObjectListItem>
                 </items>

@@ -19,6 +19,27 @@ sap.ui.define([
         /* lifecycle methods                                           */
         /* =========================================================== */
 
+        onDeleteClick: function(oEvent) {
+            const clickedItemPath = oEvent.getSource().getBindingContext().getPath();	
+            var oModel = this.getView().getModel();
+        
+            oModel.remove(clickedItemPath, {
+                success: function (data) {
+                    MessageBox.success("Category has been deleted!", {
+                        title: "Success"
+                    })
+                },
+                error: function (e) {
+                    alert("error");
+                }
+            });
+        },
+
+
+
+
+
+
         /**
          * Called when the list controller is instantiated. It sets up the event handling for the list/detail communication and other lifecycle tasks.
          * @public

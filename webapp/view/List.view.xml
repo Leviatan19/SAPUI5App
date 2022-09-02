@@ -94,6 +94,13 @@
                             path: 'ID',
                             formatter: '.formatter.numberUnit'
                         }" />
+                        <Button
+                        id="deleteButton"
+                        press=".onDeleteClick"
+                        icon="sap-icon://group-2"
+                        type="Transparent"/>
+                        <ObjectAttribute active="true" id="deleteId" text="Delete" 
+                        press=".onDeleteClick" />
                 </items>
             </List>
         </semantic:content>

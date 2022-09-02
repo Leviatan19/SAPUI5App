@@ -66,8 +66,11 @@ sap.ui.define([
          * @public
          */
         onDeleteClick: function(oEvent) {
-            const clickedItemPath = oEvent.getSource().getBindingContext().getPath();	
+            const clickedItemPath = oEvent.getSource().getBindingContext().getPath();
             var oModel = this.getView().getModel();
+            
+            //Update całej kategorii
+
         
             oModel.remove(clickedItemPath, {
                 success: function (data) {
@@ -80,7 +83,6 @@ sap.ui.define([
                 }
             });
         },
-
 
 
         onSendEmailPress: function () {
@@ -434,7 +436,7 @@ sap.ui.define([
                 content: [
                     
                     new sap.m.Label({text:"Name:"}),
-                    new Input({
+                    new sap.m.Input({
                         id: "nameInput"
                     }),
                     new sap.m.Label({text:"Price:"}),

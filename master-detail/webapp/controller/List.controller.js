@@ -15,7 +15,6 @@ sap.ui.define([
     "sap/m/Text", 
     "sap/m/MessageToast", 
     "sap/m/MessageBox", 
-
     "sap/m/Label",
     "sap/m/Input"
 ], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, Fragment, formatter, Dialog, DialogType, Button, ButtonType, Text, MessageToast, MessageBox, Input, Label) {
@@ -33,6 +32,30 @@ sap.ui.define([
          * Called when the list controller is instantiated. It sets up the event handling for the list/detail communication and other lifecycle tasks.
          * @public
          */
+
+        onDeleteClick: function(oEvent) {
+            console.log(oEvent);
+            if ((confirm("Are you sure you want to delete record?"))) {
+            
+                const clickedItemPath = oEvent.getSource().getBindingContext().getPath();	
+                var oModel = this.getView().getModel();
+                oModel.remove(clickedItemPath, {
+                    success: function (data) {
+                        MessageBox.success("Category has been deleted!", {
+                            title: "Success"
+                        });
+                    },
+                    error: function (e) {
+                        alert("error");
+                    }
+                });
+            }
+            //Cały czas jest false
+            else {
+               MessageBox.success("Unlucky");
+            }
+        },
+
         onInit : function () {
             // Control state model
             var oList = this.byId("list"),
@@ -90,21 +113,7 @@ sap.ui.define([
         /* =========================================================== */
         /* event handlers                                              */
         /* =========================================================== */
-        onDeleteClick: function(oEvent) {
-            const clickedItemPath = oEvent.getSource().getBindingContext().getPath()
-            var oModel = this.getView().getModel();
-        
-            oModel.remove(clickedItemPath, {
-                success: function (data) {
-                    MessageBox.success("Category has been deleted!", {
-                        title: "Success"
-                    })
-                },
-                error: function (e) {
-                    alert("error");
-                }
-            });
-        },
+
         /**
          * After list data is available, this handler method updates the
          * list counter
